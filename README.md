@@ -1,6 +1,6 @@
 # 🔍 Information Retrieval System - Correlation-based Fuzzy Model with AI
 
-Web Application สำหรับการค้นหาเอกสารโดยใช้ **Correlation-based Fuzzy Model** ที่ประมวลผลด้วย **AI (Google Gemini หรือ OpenAI GPT-4)**
+Web Application สำหรับการค้นหาเอกสารโดยใช้ **Correlation-based Fuzzy Model** ที่ประมวลผลด้วย **AI (Google Gemini 2.0 Flash Exp หรือ OpenAI GPT-4)**
 
 ## ✨ คุณสมบัติ
 
