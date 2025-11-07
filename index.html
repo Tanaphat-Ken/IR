@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information Retrieval System - Fuzzy Model</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Information Retrieval System</h1>
+            <p class="subtitle">Fuzzy Model Implementation</p>
+        </header>
+
+        <div class="info-section">
+            <h2>📚 เอกสารในระบบ</h2>
+            <div class="documents-grid">
+                <div class="doc-item">D1: {bird, cat, bird, cat, dog, dog, bird}</div>
+                <div class="doc-item">D2: {cat, tiger, cat, dog}</div>
+                <div class="doc-item">D3: {dog, bird, bird}</div>
+                <div class="doc-item">D4: {cat, tiger}</div>
+                <div class="doc-item">D5: {tiger, tiger, dog, tiger, cat}</div>
+                <div class="doc-item">D6: {cat, cat, tiger, tiger}</div>
+                <div class="doc-item">D7: {bird, cat, dog}</div>
+                <div class="doc-item">D8: {dog, cat, bird}</div>
+                <div class="doc-item">D9: {cat, dog, tiger}</div>
+                <div class="doc-item">D10: {tiger, cat, tiger}</div>
+                <div class="doc-item">D11: {cat, cat, dog, tiger}</div>
+                <div class="doc-item">D12: {bird, bird, cat, tiger, bird}</div>
+                <div class="doc-item">D13: {dog, dog, cat, cat}</div>
+                <div class="doc-item">D14: {tiger, tiger, bird, bird}</div>
+                <div class="doc-item">D15: {cat, dog, bird, tiger, cat, dog}</div>
+            </div>
+        </div>
+
+        <div class="query-section">
+            <h2>🔎 ค้นหาเอกสาร</h2>
+
+            <!-- API Key Input -->
+            <div class="api-key-section">
+                <h3>🔑 ตั้งค่า AI API</h3>
+                <div class="api-input-group">
+                    <select id="aiProvider" onchange="updateAPIProvider()">
+                        <option value="gemini">Google Gemini (แนะนำ - Free)</option>
+                        <option value="openai">OpenAI GPT-4</option>
+                    </select>
+                    <input type="password" id="apiKeyInput" placeholder="ใส่ API Key ของคุณที่นี่">
+                    <button onclick="saveAPIKey()">บันทึก</button>
+                </div>
+                <p class="hint">
+                    💡 <strong>ขอ API Key ฟรี:</strong>
+                    <a href="https://makersuite.google.com/app/apikey" target="_blank">Gemini API Key</a> |
+                    <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI API Key</a>
+                </p>
+                <div id="apiStatus" class="api-status"></div>
+            </div>
+
+            <!-- Query Input -->
+            <div class="query-input-group">
+                <input type="text" id="queryInput"
+                    placeholder='ใส่ query เช่น: cat, dog หรือ (cat or tiger) AND NOT dog'>
+                <button onclick="processQuery()">🤖 ค้นหาด้วย AI</button>
+            </div>
+            <p class="hint">
+                💡 <strong>รูปแบบ Query ที่รองรับ:</strong><br>
+                • <code>cat, dog</code> → หมายถึง (cat OR dog)<br>
+                • <code>cat AND dog</code> → ต้องมีทั้ง cat และ dog<br>
+                • <code>(cat or tiger) AND NOT dog</code> → มี cat หรือ tiger แต่ไม่มี dog<br>
+                • <code>bird AND cat</code> → ใช้ Fuzzy Logic ในการคำนวณ
+            </p>
+        </div>
+
+        <div id="results" class="results-section" style="display: none;">
+            <!-- Step 1: Correlation Matrix (Index Term Relationship) -->
+            <div class="step-section">
+            <h2>🔗 ขั้นตอนที่ 1: Correlation Matrix (ความสัมพันธ์ระหว่างคำ)</h2>
+            <p class="description">คำนวณค่าความสัมพันธ์ระหว่างคำทุกคู่ เพื่อจับความเชื่อมโยงของ term ในคลังเอกสาร</p>
+            <div id="correlationMatrix"></div>
+            </div>
+
+            <!-- Step 2: Membership Matrix -->
+            <div class="step-section">
+            <h2>🧩 ขั้นตอนที่ 2: Membership Matrix (ค่าความเป็นสมาชิก)</h2>
+            <p class="description">คำนวณค่าความเป็นสมาชิกของแต่ละคำในแต่ละเอกสาร (Fuzzy Degree)</p>
+            <div id="membershipMatrix"></div>
+            </div>
+
+            <!-- Step 3: Query Parsing & Fuzzy Logic -->
+            <div class="step-section">
+            <h2>🔍 ขั้นตอนที่ 3: Query Parsing & Fuzzy Logic</h2>
+            <p class="description">รองรับการประมวลผล Query ที่มี AND, OR, NOT และคำนวณผลลัพธ์ตามกฎ Fuzzy (เช่น min สำหรับ AND, max สำหรับ OR, 1 - μ สำหรับ NOT)</p>
+            <div id="queryLogic"></div>
+            </div>
+
+            <!-- Step 4: Ranking -->
+            <div class="step-section highlight">
+            <h2>🏆 ขั้นตอนที่ 4: Ranking ผลลัพธ์</h2>
+            <p class="description">รวมค่าความเกี่ยวข้องจากขั้นตอนก่อนหน้าและจัดอันดับเอกสารตามคะแนนจากมากไปน้อย</p>
+            <div id="ranking"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
